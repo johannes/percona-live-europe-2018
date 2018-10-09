@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
+    "docker-build": "docker build -t johannes/appelwoi .",
+    "docker-run": "docker run johannes/appelwoi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Johannes Schlüter <johannes@schlueters.de>",
