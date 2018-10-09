@@ -28,6 +28,7 @@ function SelectionHandler(map, options) {
   const _path = [];
   let _polygon = null;
   const _options = Object.assign({ 'color': 'blue' }, options);
+  let _preview;
 
   map.on('click', e => {
     _path.push(e.latlng);
@@ -49,8 +50,31 @@ function SelectionHandler(map, options) {
     }
   });
 
+  map.on('mousemove', e => {
+    if (!_path.length) {
+      return;
+    }
+    const path = _path.slice(0);
+    path.push(e.latlng);
+
+    if (_preview) {
+      _preview.setLatLngs(path);
+    } else {
+      _preview = L.polygon(path, {color : '#444444', opacity: .5}).addTo(_map);
+    }
+  });
+
+  map.on('mouseout', () => this.clearPreview());
+
   this.toGeoJSON = function() {
     return _polygon.toGeoJSON(); 
+  }
+
+  this.clearPreview = function() {
+    if (_preview) {
+      _preview.remove();
+      _preview = null;
+    }
   }
 
   this.clear = function() {
@@ -59,6 +83,7 @@ function SelectionHandler(map, options) {
       _polygon.remove();
       _polygon = null;
     }
+    this.clearPreview();
   }
 }
 
