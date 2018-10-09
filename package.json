@@ -1,0 +1,24 @@
+{
+  "name": "appelwoi",
+  "version": "1.0.0",
+  "description": "A sample app for Percona Live Europe 2018",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Johannes Schlüter <johannes@schlueters.de>",
+  "license": "MIT",
+  "dependencies": {
+    "@mysql/xdevapi": "file:../connector-nodejs",
+    "handlebars": "^4.0.12",
+    "hapi": "^17.6.0",
+    "hapi-mysqlx": "file:../hapi-mysql-devapi",
+    "inert": "^5.1.0",
+    "json-pretty-html": "^1.1.2",
+    "vision": "^5.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

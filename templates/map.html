@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="/assets/leaflet/leaflet.css" />
+<script src="/assets/leaflet/leaflet.js"></script>
+
+<div id="map"></div>
+
+<style>
+#map { height: 880px; }
+</style>
+
+<script>
+var mymap = L.map('map').setView([50.1174, 8.627023], 15);
+
+L.tileLayer('/assets/tiles/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 17,
+}).addTo(mymap);
+/*
+var popup = L.popup()
+    .setLatLng([50.16, 8.79])
+    .setContent("I am a standalone popup.")
+    .openOn(mymap);
+var marker = L.marker([50.0, 8.79]).addTo(mymap);
+*/
+const radisson = L.circleMarker([50.1174, 8.627023], { color: 'green'}).addTo(mymap);
+
+function SelectionHandler(map, options) {
+  const _map = map;
+  const _path = [];
+  let _polygon = null;
+  const _options = Object.assign({ 'color': 'blue' }, options);
+
+  map.on('click', e => {
+    _path.push(e.latlng);
+
+    switch (_path.length) {
+    case 1:
+	    _polygon = L.circle(_path[0], Object.assign(_options, {radius: 2 })).addTo(_map);
+       break;
+    case 2:
+       _polygon.remove();
+       _polygon = L.polyline(_path, _options).addTo(_map);
+       break;
+    case 3:
+       _polygon.remove();
+       _polygon = L.polygon(_path, _options).addTo(_map);
+       break;
+     default:
+       _polygon.setLatLngs(_path);
+    }
+  });
+
+  this.toGeoJSON = function() {
+    return _polygon.toGeoJSON(); 
+  }
+
+  this.clear = function() {
+    _path.length = 0;
+    if (_polygon) {
+      _polygon.remove();
+      _polygon = null;
+    }
+  }
+}
+
+const sel = new SelectionHandler(mymap, {color: 'red'});
+
+const markers = [];
+markers.clear = function() {
+  this.forEach(m => m.remove());
+  this.length = 0;
+}
+
+
+function doQuery() {
+  const geojson = sel.toGeoJSON();
+  const xmlhttp = new XMLHttpRequest();
+  xmlhttp.addEventListener("load", (ev) => {
+    markers.clear();
+    const places = JSON.parse(ev.target.response).places;
+    places.forEach(p => {
+      markers.push(L.circleMarker([
+                      // TODO: Why do I have to swap here? (Swapping data
+                      // import in server is wrong)
+                      p.geometry.coordinates[1], p.geometry.coordinates[0]
+                    ]).addTo(mymap));
+    });
+  });
+  xmlhttp.open("POST", "/getLocations");
+  xmlhttp.setRequestHeader("Content-Type", "application/json");
+  xmlhttp.send(JSON.stringify(geojson));
+}
+</script>
+
+<a href="#" onClick="console.log(sel.toGeoJSON())">GeoJSON</a>
+<a href="#" onClick="markers.clear(); sel.clear()">Clear</a>
+<a href="#" onClick="doQuery()">Query</a>
