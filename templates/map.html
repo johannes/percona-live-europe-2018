@@ -39,12 +39,11 @@ function SelectionHandler(map, options) {
        break;
     case 2:
        _polygon.remove();
-       _polygon = L.polyline(_path, _options).addTo(_map);
-       break;
-    case 3:
-       _polygon.remove();
        _polygon = L.polygon(_path, _options).addTo(_map);
        break;
+    case 3:
+       // TODO: trigger event to be ready
+       // fall-through
      default:
        _polygon.setLatLngs(_path);
     }
