@@ -35,17 +35,18 @@ function SelectionHandler(map, options) {
 
     switch (_path.length) {
     case 1:
-	    _polygon = L.circle(_path[0], Object.assign(_options, {radius: 2 })).addTo(_map);
-       break;
+      _polygon =
+          L.circle(_path[0], Object.assign(_options, {radius : 2})).addTo(_map);
+      break;
     case 2:
-       _polygon.remove();
-       _polygon = L.polygon(_path, _options).addTo(_map);
-       break;
+      _polygon.remove();
+      _polygon = L.polygon(_path, _options).addTo(_map);
+      break;
     case 3:
-       // TODO: trigger event to be ready
-       // fall-through
-     default:
-       _polygon.setLatLngs(_path);
+      // TODO: trigger event to be ready
+      // fall-through
+    default:
+      _polygon.setLatLngs(_path);
     }
   });
 
