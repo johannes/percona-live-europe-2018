@@ -12,7 +12,7 @@ node[amenity=restaurant](50.002811322341515,8.500165905761719,50.21052145027411,
 out;
 `;
 
-const session_promise = mysqlx.getSession('mysqlx://root@localhost');
+const session_promise = mysqlx.getSession('mysqlx://appelwoi:appelwoi@mysql'); // root@localhost');
 
 const url = "http://overpass-api.de/api/interpreter?data=" +
             querystring.escape(overpass_query);

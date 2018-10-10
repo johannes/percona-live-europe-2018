@@ -1,0 +1,20 @@
+version: '2.0'
+
+services:
+    mysql:
+        image: mysql/mysql-server
+        environment:
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_USER=appelwoi
+            - MYSQL_PASSWORD=appelwoi
+            - MYSQL_DATABASE=appelwoi
+        #healthcheck:
+        #    test: "exit 0"
+
+    appelwoi:
+        build: .
+        depends_on:
+            - mysql
+                    #        condition: service_healthy
+        ports:
+            - "3000:3000"

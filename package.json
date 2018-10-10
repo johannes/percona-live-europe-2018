@@ -12,10 +12,8 @@
   "author": "Johannes Schlüter <johannes@schlueters.de>",
   "license": "MIT",
   "dependencies": {
-    "@mysql/xdevapi": "file:../connector-nodejs",
     "handlebars": "^4.0.12",
     "hapi": "^17.6.0",
-    "hapi-mysqlx": "file:../hapi-mysql-devapi",
     "inert": "^5.1.0",
     "json-pretty-html": "^1.1.2",
     "vision": "^5.4.0"

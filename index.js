@@ -13,7 +13,7 @@ const prettyHtml = require('json-pretty-html').default;
 
 const server = Hapi.server({
   port : 3000,
-  host : 'localhost',
+  //host : 'appelwoi',
   routes : {files : {relativeTo : Path.join(__dirname, 'public')}}
 });
 
@@ -107,7 +107,7 @@ const init = async() => {
     server.register({
       plugin : hapi_mysqlx.plugin,
       options : {
-        url : 'mysqlx://root@localhost',
+        url : 'mysqlx://appelwoi:appelwoi@mysql',//localhost',
         client : {pooling : {maxSize : 100}},
         schema : 'appelwoi'
       }
@@ -136,8 +136,12 @@ const init = async() => {
     }
   });
 
-  await server.start();
-  console.log(`Server running at: ${server.info.uri}`);
+  try {
+    await server.start();
+    console.log(`Server running at: ${server.info.uri}`);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 process.on('unhandledRejection', (err) => {
