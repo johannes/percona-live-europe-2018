@@ -5,7 +5,7 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const devapi = require('@mysql/xdevapi');
-const mysqlx = require('hapi-mysqlx');
+const hapi_mysqlx = require('hapi-mysqlx');
 const querystring = require("querystring");
 const handlebars = require('handlebars');
 const prettyHtml = require('json-pretty-html').default;
@@ -105,7 +105,7 @@ const init = async() => {
   await Promise.all([
     server.register(require('vision')), 
     server.register({
-      plugin : mysqlx.plugin,
+      plugin : hapi_mysqlx.plugin,
       options : {
         url : 'mysqlx://root@localhost',
         client : {pooling : {maxSize : 100}},
