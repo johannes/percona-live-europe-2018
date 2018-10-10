@@ -9,11 +9,11 @@ const hapi_mysqlx = require('hapi-mysqlx');
 const querystring = require("querystring");
 const handlebars = require('handlebars');
 const prettyHtml = require('json-pretty-html').default;
-
+const config = require('config');
 
 const server = Hapi.server({
-  port : 3000,
-  //host : 'appelwoi',
+  port : config.get('web.port'),
+  address : config.get('web.address'),
   routes : {files : {relativeTo : Path.join(__dirname, 'public')}}
 });
 
@@ -106,11 +106,7 @@ const init = async() => {
     server.register(require('vision')), 
     server.register({
       plugin : hapi_mysqlx.plugin,
-      options : {
-        url : 'mysqlx://appelwoi:appelwoi@mysql',//localhost',
-        client : {pooling : {maxSize : 100}},
-        schema : 'appelwoi'
-      }
+      options : config.get('mysql')
     })
   ]);
 

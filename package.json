@@ -12,6 +12,7 @@
   "author": "Johannes Schlüter <johannes@schlueters.de>",
   "license": "MIT",
   "dependencies": {
+    "config": "^2.0.1",
     "handlebars": "^4.0.12",
     "hapi": "^17.6.0",
     "inert": "^5.1.0",

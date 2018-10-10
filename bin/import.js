@@ -3,6 +3,7 @@
 const wreck = require('wreck');
 const querystring = require("querystring");
 const mysqlx = require('@mysql/xdevapi');
+const config = require('config');
 
 const overpass_query = `
 [out:json];
@@ -12,7 +13,7 @@ node[amenity=restaurant](50.002811322341515,8.500165905761719,50.21052145027411,
 out;
 `;
 
-const session_promise = mysqlx.getSession('mysqlx://appelwoi:appelwoi@mysql'); // root@localhost');
+const session_promise = mysqlx.getSession(config.get('mysql.url'));
 
 const url = "http://overpass-api.de/api/interpreter?data=" +
             querystring.escape(overpass_query);
@@ -27,8 +28,8 @@ async function fetch() {
 }
 
 async function createSchemaAndCollectons(session) {
-  session.dropSchema('appelwoi');
-  const schema = await session.createSchema('appelwoi');
+  session.dropSchema(config.get('mysql.schema'));
+  const schema = await session.createSchema(config.get('mysql.schema'));
   return Promise.all([
     schema.createCollection('info'),
     schema.createCollection('places'),
