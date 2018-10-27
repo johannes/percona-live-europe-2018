@@ -40,7 +40,7 @@ function SelectionHandler(map, options) {
     switch (_path.length) {
     case 1:
       _polygon =
-          L.circle(_path[0], Object.assign(_options, {radius : 2})).addTo(_map);
+          L.circle(_path[0], Object.assign(_options, {radius : 2, fill: true})).addTo(_map);
       break;
     case 2:
       _polygon.remove();
@@ -64,7 +64,7 @@ function SelectionHandler(map, options) {
     if (_preview) {
       _preview.setLatLngs(path);
     } else {
-      _preview = L.polygon(path, Object.assign(_options, { opacity: .3})).addTo(_map);
+      _preview = L.polygon(path, Object.assign(_options, { opacity: .3, fill: true })).addTo(_map);
     }
   });
 
