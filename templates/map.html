@@ -100,23 +100,24 @@ markers.clear = function() {
 }
 
 
-function doQuery() {
+async function doQuery() {
   const geojson = sel.toGeoJSON();
-  const xmlhttp = new XMLHttpRequest();
-  xmlhttp.addEventListener("load", (ev) => {
-    markers.clear();
-    const places = JSON.parse(ev.target.response).places;
-    places.forEach(p => {
-      markers.push(L.circleMarker([
-                      // TODO: Why do I have to swap here? (Swapping data
-                      // import in server is wrong)
-                      p.geometry.coordinates[1], p.geometry.coordinates[0]
-                    ]).addTo(mymap));
-    });
+
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  const result = await fetch(
+      '/getLocations',
+      {method : 'POST', headers : myHeaders, body : JSON.stringify(geojson)});
+
+  const data = await result.json();
+  markers.clear();
+  data.places.forEach(p => {
+    markers.push(L.circleMarker([
+                    // TODO: Why do I have to swap here? (Swapping data
+                    // import in server is wrong)
+                    p.geometry.coordinates[1], p.geometry.coordinates[0]
+                  ]).addTo(mymap));
   });
-  xmlhttp.open("POST", "/getLocations");
-  xmlhttp.setRequestHeader("Content-Type", "application/json");
-  xmlhttp.send(JSON.stringify(geojson));
 }
 </script>
 
