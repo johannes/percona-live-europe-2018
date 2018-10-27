@@ -25,13 +25,6 @@ layers.local.addTo(mymap);
 
 L.control.layers(layers).addTo(mymap);
 
-/*
-var popup = L.popup()
-    .setLatLng([50.16, 8.79])
-    .setContent("I am a standalone popup.")
-    .openOn(mymap);
-var marker = L.marker([50.0, 8.79]).addTo(mymap);
-*/
 const radisson = L.circleMarker([50.1174, 8.627023], { color: 'green'}).addTo(mymap);
 
 function SelectionHandler(map, options) {
