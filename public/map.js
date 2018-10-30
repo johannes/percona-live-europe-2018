@@ -88,12 +88,18 @@ const sel = new SelectionHandler(mymap, {color: 'red'});
 function PlaceList(id) {
   const _rootElement = document.getElementById(id);
   let _places = [];
+  let _activePopup = false;
 
   this.clear = () => {
     _rootElement.innerHTML = '';
 
     _places.forEach(p => p.marker.remove());
     _places.length = 0;
+
+    if (_activePopup) {
+      _activePopup.remove();
+      _activePopup = false;
+    }
   }
 
   this.show = (places) => {
@@ -129,7 +135,7 @@ function PlaceList(id) {
       place.div.onmouseover = () => {
         place.marker.setStyle({radius : 20, color : 'red'});
 
-        L.popup()
+        _activePopup = L.popup()
             .setLatLng([ place.lat, place.lon ])
             .setContent(place.div.innerHTML)
             .openOn(mymap);
