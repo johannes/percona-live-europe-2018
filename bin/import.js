@@ -52,8 +52,6 @@ async function createSchemaAndCollectons(session) {
             "type" : "Point",
             "coordinates" : [ element.lon, element.lat ]
           };
-          delete element.lon;
-          delete element.lan;
 	  return element;
         }))
         .execute();
