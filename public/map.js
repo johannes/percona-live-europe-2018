@@ -116,10 +116,7 @@ function PlaceList(id) {
              // import in server is wrong)
              place.geometry.coordinates[1], place.geometry.coordinates[0]
            ]).addTo(mymap);
-      return place;
-    });
 
-    _places.forEach(place => {
       const tags = [];
       for (const key in place.tags) {
         tags.push(`<li>${key}: ${place.tags[key]}</li>`);
@@ -147,11 +144,10 @@ function PlaceList(id) {
       place.div.onclick = () => {
         /* ... */
       };
-    });
 
-    if (places.length > 300) {
-      _rootElement.innerHTML += `<div>${places.length - 20} more (skipped)</div>`;
-    }
+
+      return place;
+    });
   }
 }
 
