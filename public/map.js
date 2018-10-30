@@ -84,29 +84,82 @@ function SelectionHandler(map, options) {
 
 const sel = new SelectionHandler(mymap, {color: 'red'});
 
-const markers = [];
-markers.clear = function() {
-  this.forEach(m => m.remove());
-  this.length = 0;
+
+function PlaceList(id) {
+  const _rootElement = document.getElementById(id);
+  let _places = [];
+
+  this.clear = () => {
+    _rootElement.innerHTML = '';
+
+    _places.forEach(p => p.marker.remove());
+    _places.length = 0;
+  }
+
+  this.show = (places) => {
+    /* Note: this is not the nicest way of doing this. Aside from re-rdring on
+     * each single addition it is also not escaping data properly, beter use a
+     * framework in real code! */
+
+    this.clear();
+
+    _places = places.map(place => {
+      place.marker =
+          L.circleMarker([
+             // TODO: Why do I have to swap here? (Swapping data
+             // import in server is wrong)
+             place.geometry.coordinates[1], place.geometry.coordinates[0]
+           ]).addTo(mymap);
+      return place;
+    });
+
+    _places.forEach(place => {
+      const tags = [];
+      for (const key in place.tags) {
+        tags.push(`<li>${key}: ${place.tags[key]}</li>`);
+      }
+
+      place.div = document.createElement('div');
+      place.div.innerHTML =
+          `<p><b>${place.tags.name}</b> (${place.lat},${place.lon})</p>
+	    <ul>${tags.join("\n")}</ul>`;
+
+      _rootElement.appendChild(place.div).parentNode;
+
+      place.div.onmouseover = () => {
+        place.marker.setStyle({radius : 20, color : 'red'});
+
+        L.popup()
+            .setLatLng([ place.lat, place.lon ])
+            .setContent(place.div.innerHTML)
+            .openOn(mymap);
+      };
+
+      place.div.onmouseout =
+          () => { place.marker.setStyle({radius : 10, color : 'blue'}); };
+
+      place.div.onclick = () => {
+        /* ... */
+      };
+    });
+
+    if (places.length > 300) {
+      _rootElement.innerHTML += `<div>${places.length - 20} more (skipped)</div>`;
+    }
+  }
 }
 
+const places = new PlaceList('list');
 
 async function doQuery() {
   const geojson = sel.toGeoJSON();
 
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
-  const result = await fetch(
-      '/getLocations',
-      {method : 'POST', headers : myHeaders, body : JSON.stringify(geojson)});
+  const result = await fetch('/getLocations', {
+    method : 'POST',
+    headers : {'Content-Type' : 'application/json'},
+    body : JSON.stringify(geojson)
+  });
 
   const data = await result.json();
-  markers.clear();
-  data.places.forEach(p => {
-    markers.push(L.circleMarker([
-                    // TODO: Why do I have to swap here? (Swapping data
-                    // import in server is wrong)
-                    p.geometry.coordinates[1], p.geometry.coordinates[0]
-                  ]).addTo(mymap));
-  });
+  places.show(data.places);
 }
