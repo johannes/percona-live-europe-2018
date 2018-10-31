@@ -75,7 +75,7 @@ server.route({
 
 server.route({
   method : 'POST',
-  path : '/getLocations',
+  path : '/getPlaces',
   handler : async(request, h) => {
     // TODO: Handle bad data
     const collection = await request.mysqlxCollection('places');
@@ -85,16 +85,24 @@ server.route({
       "ST_within(ST_GeomFromGeoJSON($.geometry, 1, 4326), ST_GeomFromGeoJSON(:geo, 1, 4326))"
     ];
     const values = { 'geo': JSON.stringify(geometry) };
-/*
-    conditions.push("tags.wheelchair = :wheel");
-    values['wheel'] = 'yes';
-*/
+
+    if (request.payload.withphone) {
+      conditions.push("tags.phone != ''");
+    }
+
+    if (request.payload.applewine) {
+      conditions.push("tags.applewine = 'yes'");
+    }
+
+    if (request.payload.namecontains) {
+      conditions.push("tags.name like concat('%', :name, '%')");
+      values.name = request.payload.namecontains;
+    }
+
     const result = { places: [] };
       await collection
 	    .find(conditions.join(' && '))
 	    .bind(values)
-	    //.find("St_within(st_geomfromgeojson($.geometry, 1, 4326), ST_GeomFromGeoJSON(:geo, 1, 4326))")
-	    //.bind({ 'geo': JSON.stringify(geometry)})
 	    .execute(place => result.places.push(place));
 
     return result;

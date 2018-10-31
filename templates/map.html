@@ -5,8 +5,15 @@
 <div id="map"></div>
 <div id="right">
   <div id="query">
-    <a href="#" onClick="places.clear(); sel.clear()">Clear</a>
-    <a href="#" onClick="doQuery()">Query</a>
+    <p>
+      <a href="#" onClick="places.clear(); sel.clear()">Clear</a>
+      <a href="#" onClick="doQuery()">Query</a>
+    </p>
+    <p>
+      <input type="checkbox" id="withphone">Only etries with phone number<br>
+      <input type="checkbox" id="applewine">Serving Äppelwoi<br>
+      Name contains: <input id="namecontains">
+    </p>
   </div>
   <div id="list"></div>
 </div>

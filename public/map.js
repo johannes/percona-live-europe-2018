@@ -154,12 +154,15 @@ function PlaceList(id) {
 const places = new PlaceList('list');
 
 async function doQuery() {
-  const geojson = sel.toGeoJSON();
+  const query = sel.toGeoJSON();
+  query.withphone = document.getElementById('withphone').checked;
+  query.applewine = document.getElementById('applewine').checked;
+  query.namecontains = document.getElementById('namecontains').value;
 
-  const result = await fetch('/getLocations', {
+  const result = await fetch('/getPlaces', {
     method : 'POST',
     headers : {'Content-Type' : 'application/json'},
-    body : JSON.stringify(geojson)
+    body : JSON.stringify(query)
   });
 
   const data = await result.json();
