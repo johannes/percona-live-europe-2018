@@ -12,6 +12,7 @@
   "author": "Johannes Schlüter <johannes@schlueters.de>",
   "license": "MIT",
   "dependencies": {
+    "@mysql/xdevapi": "^8.0.13",
     "config": "^2.0.1",
     "handlebars": "^4.0.12",
     "hapi": "^17.6.0",
