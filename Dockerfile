@@ -8,7 +8,5 @@ RUN npm install
 
 COPY . .
 
-RUN mv extra/hapi-mysqlx node_modules
-
 EXPOSE 3000
 CMD [ "npm", "start" ]

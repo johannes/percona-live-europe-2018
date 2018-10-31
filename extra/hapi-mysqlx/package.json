@@ -1,0 +1,21 @@
+{
+  "name": "hapi-mysqlx",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "demo": "node ./demo/app.js"
+  },
+  "dependencies": {
+    "@mysql/xdevapi": "file:../connector-nodejs",
+    "hapi": "^17.6.0"
+  },
+  "description": "A plugin making MySQL X DevAPI available to hapi",
+  "main": "lib/mysqlx.js",
+  "devDependencies": {
+    "handlebars": "^4.0.12",
+    "json-pretty-html": "^1.1.2",
+    "vision": "^5.4.0"
+  },
+  "author": "Johannes Schlüter <johannes@schlueters.de>",
+  "license": "MIT"
+}
