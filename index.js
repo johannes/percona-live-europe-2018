@@ -109,13 +109,27 @@ server.route({
   }
 });
 
+server.route({
+  method : 'POST',
+  path : '/renamePlace',
+  handler : async(request, h) => {
+    const collection = await request.mysqlxCollection('places');
+    const query = request.payload;
+
+    const result = await collection.modify('_id = :id')
+        .set('tags.name', query.name)
+        .bind({id : query.id})
+        .execute();
+
+    return {result : result.getAffectedItemsCount()};
+  }
+});
+
 const init = async() => {
   await Promise.all([
-    server.register(require('vision')), 
-    server.register({
-      plugin : hapi_mysqlx.plugin,
-      options : config.get('mysql')
-    })
+    server.register(require('vision')),
+    server.register(
+        {plugin : hapi_mysqlx.plugin, options : config.get('mysql')})
   ]);
 
   server.views({

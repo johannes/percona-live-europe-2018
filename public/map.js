@@ -127,7 +127,14 @@ function PlaceList(id) {
           `<p><b>${place.tags.name}</b> (${place.lat},${place.lon})</p>
 	    <ul>${tags.join("\n")}</ul>`;
 
-      _rootElement.appendChild(place.div).parentNode;
+      _rootElement.appendChild(place.div);
+
+      const ahref = document.createElement('a');
+      place.div.appendChild(ahref);
+      ahref.textContent = 'Edit name';
+      ahref.onclick = () => {
+        renamePlace(place);
+      };
 
       place.div.onmouseover = () => {
         place.marker.setStyle({radius : 20, color : 'red'});
@@ -167,4 +174,21 @@ async function doQuery() {
 
   const data = await result.json();
   places.show(data.places);
+}
+
+async function renamePlace(place) {
+  const newName = window.prompt("New Name", place.tags.name);
+  const query = {
+	  id: place._id,
+	  name: newName
+  };
+
+  const result = await fetch('/renamePlace', {
+    method : 'POST',
+    headers : {'Content-Type' : 'application/json'},
+    body : JSON.stringify(query)
+  });
+
+  const res = await result.json();
+  window.alert(`${res.result} documents updated`);
 }
