@@ -1,18 +1,18 @@
 const layers = {
+  'OpenStreetMap (Mapnik)' : L.tileLayer("//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution :
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  }),
   local : L.tileLayer('/assets/tiles/{z}/{x}/{y}.png', {
     attribution :
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     maxZoom : 17,
-  }),
-  OSM : L.tileLayer("//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution :
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   })
 };
 
 var mymap = L.map('map').setView([50.1174, 8.627023], 15);
 
-layers.local.addTo(mymap);
+layers['OpenStreetMap (Mapnik)'].addTo(mymap);
 
 L.control.layers(layers).addTo(mymap);
 
