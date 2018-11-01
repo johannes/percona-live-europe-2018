@@ -4,13 +4,14 @@
   "description": "A sample app for Percona Live Europe 2018",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "docker-build": "docker build -t johannes/appelwoi .",
-    "docker-run": "docker run johannes/appelwoi",
+    "start": "nodemon bin/server.js",
+    "docker-build": "docker-compose build",
+    "docker-run": "docker-compose up",
+    "docker-init": "docker-compose exec appelwoi ./bin/import.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Johannes Schlüter <johannes@schlueters.de>",
-  "license": "MIT",
+  "license": "GPL-2.0",
   "dependencies": {
     "@mysql/xdevapi": "^8.0.13",
     "config": "^2.0.1",
