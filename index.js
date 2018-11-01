@@ -47,21 +47,13 @@ server.route({
   method : 'GET',
   path : '/collection/{collection}',
   handler : async(request, h) => {
-    const collection = await request.mysqlxCollection(request.params.collection);
+    const collection =
+        await request.mysqlxCollection(request.params.collection);
 
     const docs = [];
-    try {
-      //await collection.find().execute(
-      await collection
-	    .find()
-	    .execute(
-          doc => docs.push({id : doc._id, doc : prettyHtml(doc)}));
-      return h.view('collection',
-                    {name : request.params.collection, docs}) // docs;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
+    await collection.find().execute(
+        doc => docs.push({id : doc._id, doc : prettyHtml(doc)}));
+    return h.view('collection', {name : request.params.collection, docs});
   }
 });
 
