@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon bin/server.js",
+    "init": "node ./bin/import.js",
     "docker-build": "docker-compose build",
     "docker-run": "docker-compose up",
-    "docker-init": "docker-compose exec appelwoi ./bin/import.js",
+    "docker-init": "docker-compose exec appelwoi npm run init",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Johannes Schlüter <johannes@schlueters.de>",
